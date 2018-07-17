@@ -67,5 +67,20 @@ pipeline {
                 )
             }
         }
+        stage('CleanUP_CanaryDeploy') {
+            when {
+                branch 'master'
+            }
+            environment {
+                CANARY_REPLICAS = 0
+            }
+            steps {
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'train-schedule-kube-canary.yml',
+                    enableConfigSubstitution: true
+                )
+            }
+        }
     }
 }
